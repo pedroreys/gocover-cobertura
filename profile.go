@@ -15,7 +15,6 @@ import (
 	"fmt"
 	"github.com/dimchansky/utfbom"
 	"io"
-	"os"
 	"regexp"
 	"sort"
 	"strconv"
@@ -57,7 +56,6 @@ func ParseProfiles(in io.Reader) ([]*Profile, error) {
 
 	for s.Scan() {
 		line := s.Text()
-		_,_ = fmt.Fprintf(os.Stderr, "line: %q\n", line)
 		if mode == "" {
 			const p = "mode: "
 			if !strings.HasPrefix(line, p) || line == p {
