@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/dimchansky/utfbom"
 	"go/ast"
 	"go/build"
 	"go/parser"
@@ -22,7 +23,11 @@ func main() {
 }
 
 func convert(in io.Reader, out io.Writer) {
-	profiles, err := ParseProfiles(in)
+
+	reader, enc := utfbom.Skip(in)
+	_,_ = fmt.Fprintf(os.Stderr, "Encoding Detected: %+v", enc.String())
+
+	profiles, err := ParseProfiles(reader)
 	if err != nil {
 		panic(fmt.Sprintf("Can't parse profiles.\n%s", err))
 	}
