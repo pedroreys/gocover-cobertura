@@ -24,7 +24,7 @@ func main() {
 func convert(in io.Reader, out io.Writer) {
 	profiles, err := ParseProfiles(in)
 	if err != nil {
-		panic("Can't parse profiles")
+		panic(fmt.Sprintf("Can't parse profiles.\n%s", err))
 	}
 
 	srcDirs := build.Default.SrcDirs()
