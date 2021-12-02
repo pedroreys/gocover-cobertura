@@ -13,7 +13,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/dimchansky/utfbom"
 	"io"
+	"os"
 	"regexp"
 	"sort"
 	"strconv"
@@ -48,10 +50,14 @@ func ParseProfiles(in io.Reader) ([]*Profile, error) {
 	// Rest of file is in the format
 	//	encoding/base64/base64.go:34.44,37.40 3 1
 	// where the fields are: name.go:line.column,line.column numberOfStatements count
-	s := bufio.NewScanner(in)
+	reader := utfbom.SkipOnly(in)
+
+	s := bufio.NewScanner(reader)
 	mode := ""
+
 	for s.Scan() {
 		line := s.Text()
+		_,_ = fmt.Fprintf(os.Stderr, "line: %q\n", line)
 		if mode == "" {
 			const p = "mode: "
 			if !strings.HasPrefix(line, p) || line == p {
