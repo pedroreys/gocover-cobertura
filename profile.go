@@ -55,7 +55,7 @@ func ParseProfiles(in io.Reader) ([]*Profile, error) {
 		if mode == "" {
 			const p = "mode: "
 			if !strings.HasPrefix(line, p) || line == p {
-				return nil, fmt.Errorf("bad mode line: [%v]", line)
+				return nil, fmt.Errorf("bad mode line: %q", line)
 			}
 			mode = line[len(p):]
 			continue
